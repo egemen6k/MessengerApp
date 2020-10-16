@@ -8,6 +8,9 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TableLayout
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -47,6 +50,36 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    internal class ViewPagerAdapter(fragmentManager: FragmentManager)  :
+        FragmentPagerAdapter(fragmentManager){
+
+        private val fragments:ArrayList<Fragment>
+        private val titles:ArrayList<String>
+
+        init {
+            fragments = ArrayList<Fragment>()
+            titles = ArrayList<String>()
+        }
+
+
+        override fun getCount(): Int {
+        return fragments.size
+        }
+
+        override fun getItem(position: Int): Fragment {
+            return fragments[position]
+        }
+
+        fun addFragment(fragment: Fragment,title:String){
+            fragments.add(fragment)
+            titles.add(title)
+        }
+
+        override fun getPageTitle(i: Int): CharSequence? {
+            return titles[i]
         }
     }
 }
