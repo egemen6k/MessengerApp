@@ -29,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
         /*accessing tablayout*/
         val tableLayout: TableLayout =  findViewById(R.id.tab_layout)
+
+        /*accessing  viewpager*/
         val viewPager: ViewPager =  findViewById(R.id.view_pager)
     }
 
