@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TableLayout
 import androidx.appcompat.widget.Toolbar
+import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -26,7 +27,9 @@ class MainActivity : AppCompatActivity() {
         olarak gösterilir ve biz bunu istemiyoruz*/
         supportActionBar!!.title=""
 
+        /*accessing tablayout*/
         val tableLayout: TableLayout =  findViewById(R.id.tab_layout)
+        val viewPager: ViewPager =  findViewById(R.id.view_pager)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
