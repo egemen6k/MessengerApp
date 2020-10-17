@@ -12,6 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.example.messengerapp.Fragments.ChatsFragment
+import com.example.messengerapp.Fragments.SearchFragment
+import com.example.messengerapp.Fragments.SettingsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +38,15 @@ class MainActivity : AppCompatActivity() {
 
         /*accessing  viewpager*/
         val viewPager: ViewPager =  findViewById(R.id.view_pager)
+
+        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+
+        viewPagerAdapter.addFragment(ChatsFragment(),"Chats")
+        viewPagerAdapter.addFragment(SearchFragment(),"Search")
+        viewPagerAdapter.addFragment(SettingsFragment(),"Settings")
+
+        viewPager.adapter = viewPagerAdapter
+        tab_layout.setupWithViewPager(viewPager)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -56,10 +68,15 @@ class MainActivity : AppCompatActivity() {
     internal class ViewPagerAdapter(fragmentManager: FragmentManager)  :
         FragmentPagerAdapter(fragmentManager){
 
+        /*iki tane array list oluşturduk. biri fragmentlardan diğeri stringlerden
+        oluşacak diye  belirttik. Burada sadece tanımlama yaptık*/
         private val fragments:ArrayList<Fragment>
         private val titles:ArrayList<String>
 
         init {
+            /*burada, yukarıda tipini tanımlamış olduğumuz variableları initialize  ettik
+             arratlistof(.....)  diye statik  data girebilirdik. ilk durumu boş olan bir liste
+             yarattık ve bıraktık*/
             fragments = ArrayList<Fragment>()
             titles = ArrayList<String>()
         }
@@ -78,6 +95,7 @@ class MainActivity : AppCompatActivity() {
             titles.add(title)
         }
 
+       /* tablayout page title'ı bize  veriyor*/
         override fun getPageTitle(i: Int): CharSequence? {
             return titles[i]
         }
