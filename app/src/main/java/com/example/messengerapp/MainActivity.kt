@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager
 import com.example.messengerapp.Fragments.ChatsFragment
 import com.example.messengerapp.Fragments.SearchFragment
 import com.example.messengerapp.Fragments.SettingsFragment
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar!!.title=""
 
         /*accessing tablayout*/
-        val tableLayout: TableLayout =  findViewById(R.id.tab_layout)
+        val tabLayout: TabLayout =  findViewById(R.id.tab_layout)
 
         /*accessing  viewpager*/
         val viewPager: ViewPager =  findViewById(R.id.view_pager)
@@ -46,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         viewPagerAdapter.addFragment(SettingsFragment(),"Settings")
 
         viewPager.adapter = viewPagerAdapter
-        tab_layout.setupWithViewPager(viewPager)
+        tabLayout.setupWithViewPager(viewPager)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
