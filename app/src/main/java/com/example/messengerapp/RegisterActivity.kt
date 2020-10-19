@@ -68,14 +68,26 @@ class RegisterActivity : AppCompatActivity() {
                         val userHashMap = HashMap<String, Any>()
                         userHashMap["uid"] = firebaseUserID
                         userHashMap["username"] = username
+                        /*aşağıda  verilen linkler  place holder, kullanıcı bu görseller yerine
+                        istediğini ekleyebilecek*/
                         userHashMap["profile"] = "https://firebasestorage.googleapis.com/v0/b/messengerapp-1593f.appspot.com/o/profile.png?alt=media&token=e3db7571-4218-46c4-b9e8-479ced85ce7f"
                         userHashMap["cover"] = "https://firebasestorage.googleapis.com/v0/b/messengerapp-1593f.appspot.com/o/cover.jpg?alt=media&token=c19ce505-79c1-4454-8fac-25524a847901"
-                        userHashMap["username"] = username
-                        userHashMap["username"] = username
-                        userHashMap["username"] = username
-                        userHashMap["username"] = username
-                        userHashMap["username"] = username
+                        userHashMap["status"] = "offline"
+                        userHashMap["search"] = username.toLowerCase()
+                        userHashMap["facebook"] = "https://m.facebook.com"
+                        userHashMap["instagram"] = "https://m.instagram.com"
+                        userHashMap["website"] = "https://www.google.com"
 
+                        refUsers.updateChildren(userHashMap).addOnCompleteListener{ task ->
+                            if (task.isSuccessful){
+                                val intent = Intent(this,MainActivity::class.java)
+                                /*user back butonuna bastığında login veya  registeractivity'e
+                                Logout'a  basmadığı sürece gitmesin*/
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                                finish()
+                            }
+                        }
                     }
                    /* kayıt işlemi işlem başarılı değilse Error Message: sistem çıktısı*/
                     else{
