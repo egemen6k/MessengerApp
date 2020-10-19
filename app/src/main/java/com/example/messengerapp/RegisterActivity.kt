@@ -7,12 +7,14 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_register.*
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var mAuth : FirebaseAuth
     private lateinit var refUsers : DatabaseReference
+    private var firebaseUserID: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +30,7 @@ class RegisterActivity : AppCompatActivity() {
             finish()
         }
 
+        /*user anlık durum bilgisine erişim sağlanması*/
         mAuth  = FirebaseAuth.getInstance()
 
         register_btn.setOnClickListener {
@@ -36,18 +39,49 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registerUser() {
+        /*element içeriklerine erişim sağlanması*/
         val username:  String  =  username_register.text.toString()
         val email:  String  =  email_register.text.toString()
         val password:  String  =  password_register.text.toString()
 
+        /*kullanıcı edittext içeriği girdi mi koşul kontrolü*/
         if(username  ==  ""){
             Toast.makeText(this,"Please write username.",Toast.LENGTH_LONG).show()
         }else if(email == ""){
             Toast.makeText(this,"Please write email.",Toast.LENGTH_LONG).show()
         }else if(password == ""){
             Toast.makeText(this,"Please write password.",Toast.LENGTH_LONG).show()
-        }else{
+        }
+        /*her şey tamamsa  "save the information of the user inside  the service
+        firebase real time database"*/
+        else{
+            /*kullanıcı kayıt işlemi*/
+            mAuth.createUserWithEmailAndPassword(email,password)
+                    /*işlem sonrasında*/
+                .addOnCompleteListener{task ->
+                    /*kayıt işlemi başarılıysa realtimedatabase'e kayıt yapılır*/
+                    if (task.isSuccessful){
+                        /*firebaseden ID çekilmesi ve activityde erişim sağlanması*/
+                        firebaseUserID  = mAuth.currentUser!!.uid
+                        refUsers = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUserID)
 
+                        val userHashMap = HashMap<String, Any>()
+                        userHashMap["uid"] = firebaseUserID
+                        userHashMap["username"] = username
+                        userHashMap["profile"] = "https://firebasestorage.googleapis.com/v0/b/messengerapp-1593f.appspot.com/o/profile.png?alt=media&token=e3db7571-4218-46c4-b9e8-479ced85ce7f"
+                        userHashMap["cover"] = "https://firebasestorage.googleapis.com/v0/b/messengerapp-1593f.appspot.com/o/cover.jpg?alt=media&token=c19ce505-79c1-4454-8fac-25524a847901"
+                        userHashMap["username"] = username
+                        userHashMap["username"] = username
+                        userHashMap["username"] = username
+                        userHashMap["username"] = username
+                        userHashMap["username"] = username
+
+                    }
+                   /* kayıt işlemi işlem başarılı değilse Error Message: sistem çıktısı*/
+                    else{
+                        Toast.makeText(this,"Error Message:" + task.exception!!.message.toString(),Toast.LENGTH_LONG).show()
+                    }
+                }
         }
     }
 }
