@@ -36,8 +36,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar_main)
 
-        /*user bilgisini firebaseUser olarak referansladık ve user'in id sini kullanarak
-         database'e refUsers kullanarak erişim sağladık*/
+        /*user kimliğini firebaseUser olarak referansladık ve user'in id sini kullanarak
+         databaseden user bilgilerini refUsers kullanarak referansladık*/
         firebaseUser = FirebaseAuth.getInstance().currentUser
         refUsers = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser!!.uid)
 
@@ -69,12 +69,17 @@ class MainActivity : AppCompatActivity() {
         /*displayer username and profile picture*/
         /*kullanıcı  exist  mi onun sorgulaması ve devamındaki işlemler*/
         refUsers!!.addValueEventListener(object : ValueEventListener{
+            /*p0 ->  reference for that specific user id*/
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists()){
+                    /*soldaki users model class, sağdaki users reference child*/
                     val user: Users? = p0.getValue(Users::class.java)
 
+
                     user_name.text = user!!.getUserName()
-                    Picasso.get().load(user.getProfile()).into(profile_image)
+                    /*placeholder eklememizin sebebi, profile'a erişim sağayıp görseli çekene kadar geçen
+                    sürede drawabledan profile isimli görseli görüntülemesi için*/
+                    Picasso.get().load(user.getProfile()).placeholder(R.drawable.profile).into(profile_image)
                 }
             }
 

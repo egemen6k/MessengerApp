@@ -2,7 +2,7 @@ package com.example.messengerapp.ModelClasses
 
 class Users {
     /*databasede oluşturduğumuz hashmap key isimleri ile aynı isimler olması lazım
-    * dataları atayacağımız bir model oluşturuyoruz*/
+    * dataları atayacağımız bir model class oluşturuyoruz*/
     private var uid: String = ""
     private var username: String = ""
     private var profile: String = ""
@@ -13,9 +13,10 @@ class Users {
     private var instagram: String = ""
     private var website: String = ""
 
+    /*construtor çağırıyoruz*/
     constructor()
 
-
+/*dataları eşleştirdik*/
     constructor(
         uid: String,
         username: String,
@@ -38,6 +39,7 @@ class Users {
         this.website = website
     }
 
+    /*dataların get ve set fonksiyonları*/
     fun getUID(): String?{
             return uid
     }
