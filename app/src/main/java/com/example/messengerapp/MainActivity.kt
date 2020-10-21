@@ -68,6 +68,7 @@ class MainActivity : AppCompatActivity() {
 
         /*displayer username and profile picture*/
         /*kullanıcı  exist  mi onun sorgulaması ve devamındaki işlemler*/
+        /*Add a listener for changes in the data at this location.*/
         refUsers!!.addValueEventListener(object : ValueEventListener{
             /*p0 ->  reference for that specific user id*/
             override fun onDataChange(p0: DataSnapshot) {
