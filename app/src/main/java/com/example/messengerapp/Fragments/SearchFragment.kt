@@ -37,21 +37,21 @@ class SearchFragment : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_search, container, false)
 
-        mUsers = ArrayList()
-        retrieveAllUser()
         recyclerView = view.findViewById(R.id.searchList)
         recyclerView!!.setHasFixedSize(true)
-        recyclerView!!.layoutManager = LinearLayoutManager(context)
+        recyclerView!!.layoutManager =  LinearLayoutManager(context)
         searchEditTxt = view.findViewById(R.id.searchUsersET)
 
+        mUsers = ArrayList()
+        retrieveAllUser()
 
         searchEditTxt!!.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(cs: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
 
             override fun onTextChanged(cs: CharSequence?, start: Int, before: Int, count: Int) {
-               searchForUsers(cs.toString())
+               searchForUsers(cs.toString().toLowerCase())
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -59,7 +59,6 @@ class SearchFragment : Fragment() {
             }
 
         })
-
 
        return view
     }
@@ -71,17 +70,17 @@ class SearchFragment : Fragment() {
 
         refUsers.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
-                if(searchEditTxt.toString() == null){
-                    (mUsers as ArrayList<Users>).clear()
-                    for (snapshot in p0.children) {
-                        val user: Users? = snapshot.getValue(Users::class.java)
-                        /*ben hariç bütün userları arrayliste ekle*/
-                        if (!(user!!.getUID()).equals(firebaseUserID)) {
-                            (mUsers as ArrayList<Users>).add(user)
-                        }
+            if(searchEditTxt!!.text.toString() ==  ""){
+                (mUsers as ArrayList<Users>).clear()
+                for (snapshot in p0.children) {
+                    val user: Users? = snapshot.getValue(Users::class.java)
+                    /*ben hariç bütün userları arrayliste ekle*/
+                    if (!(user!!.getUID()).equals(firebaseUserID)) {
+                        (mUsers as ArrayList<Users>).add(user)
                     }
-                    userAdapter = UserAdapter(context!!, mUsers!!, false)
-                    recyclerView!!.adapter = userAdapter
+                }
+                userAdapter = UserAdapter(context!!, mUsers!!, false)
+                recyclerView!!.adapter = userAdapter
                 }
             }
 
@@ -94,7 +93,7 @@ class SearchFragment : Fragment() {
 
     private fun searchForUsers(str: String){
         val firebaseUserID = FirebaseAuth.getInstance().currentUser!!.uid
-        val queryUsers = FirebaseDatabase.getInstance().reference.child("Users")
+        val queryUsers = FirebaseDatabase.getInstance().reference
             .child("Users")
             .orderByChild("search")
             .startAt(str)
@@ -102,25 +101,21 @@ class SearchFragment : Fragment() {
 
         queryUsers.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
-                (mUsers as ArrayList<Users>).clear()
-                for (snapshot in p0.children) {
-                    val user: Users? = snapshot.getValue(Users::class.java)
-                    /*ben hariç bütün userları arrayliste ekle*/
-                    if (!(user!!.getUID()).equals(firebaseUserID)) {
-                        (mUsers as ArrayList<Users>).add(user)
+                    (mUsers as ArrayList<Users>).clear()
+                    for (snapshot in p0.children) {
+                        val user: Users? = snapshot.getValue(Users::class.java)
+                        /*ben hariç bütün userları arrayliste ekle*/
+                        if (!(user!!.getUID()).equals(firebaseUserID)) {
+                            (mUsers as ArrayList<Users>).add(user)
+                        }
                     }
-                }
-                userAdapter = UserAdapter(context!!, mUsers!!, false)
-                recyclerView!!.adapter = userAdapter
-
+                    userAdapter = UserAdapter(context!!, mUsers!!, false)
+                    recyclerView!!.adapter = userAdapter
             }
 
             override fun onCancelled(p0: DatabaseError) {
 
             }
-
         })
     }
-
-
 }
