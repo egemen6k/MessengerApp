@@ -1,6 +1,8 @@
 package com.example.messengerapp.Fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -45,7 +47,7 @@ class SearchFragment : Fragment() {
             override fun onDataChange(p0: DataSnapshot) {
                 (mUsers as ArrayList<Users>).clear()
                 for (snapshot in p0.children) {
-                    val user: Users? = p0.getValue(Users::class.java)
+                    val user: Users? = snapshot.getValue(Users::class.java)
                     /*ben hariç bütün userları arrayliste ekle*/
                     if (!(user!!.getUID()).equals(firebaseUserID)) {
                         (mUsers as ArrayList<Users>).add(user)
@@ -60,5 +62,35 @@ class SearchFragment : Fragment() {
         })
 
     }
+
+    private fun searchForUsers(str: String){
+        val firebaseUserID = FirebaseAuth.getInstance().currentUser!!.uid
+        val queryUsers = FirebaseDatabase.getInstance().reference.child("Users")
+            .child("Users")
+            .orderByChild("search")
+            .startAt(str)
+            .endAt(str + "\uf8ff")
+
+        queryUsers.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                (mUsers as ArrayList<Users>).clear()
+                for (snapshot in p0.children) {
+                    val user: Users? = snapshot.getValue(Users::class.java)
+                    /*ben hariç bütün userları arrayliste ekle*/
+                    if (!(user!!.getUID()).equals(firebaseUserID)) {
+                        (mUsers as ArrayList<Users>).add(user)
+                    }
+                }
+                userAdapter = UserAdapter(context!!, mUsers!!, false)
+
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+        })
+    }
+
 
 }

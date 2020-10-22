@@ -37,7 +37,7 @@ class UserAdapter (
     }
 
     inner class ViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView){
-        var usernameTxt: TextView = itemView.findViewById(R.id.user_name)
+        var usernameTxt: TextView = itemView.findViewById(R.id.username)
         var profileImageView: CircleImageView = itemView.findViewById(R.id.profile_image)
         var onlineTxt: CircleImageView = itemView.findViewById(R.id.image_online)
         var oflineTxt: CircleImageView = itemView.findViewById(R.id.image_offline)
