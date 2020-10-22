@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.messengerapp.AdapterClasses.UserAdapter
 import com.example.messengerapp.ModelClasses.Users
@@ -16,11 +18,15 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.fragment_search.*
 
 
 class SearchFragment : Fragment() {
     private var userAdapter: UserAdapter? = null
     private var mUsers: List<Users>? = null
+    private var recyclerView: RecyclerView? = null
+    private var searchEditTxt: EditText? = null
+
 
 
     /*factory bileşenleri çıkartıldı*/
@@ -33,6 +39,26 @@ class SearchFragment : Fragment() {
 
         mUsers = ArrayList()
         retrieveAllUser()
+        recyclerView = view.findViewById(R.id.searchList)
+        recyclerView!!.setHasFixedSize(true)
+        recyclerView!!.layoutManager = LinearLayoutManager(context)
+        searchEditTxt = view.findViewById(R.id.searchUsersET)
+
+
+        searchEditTxt!!.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(cs: CharSequence?, start: Int, before: Int, count: Int) {
+               searchForUsers(cs.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+        })
 
 
        return view
@@ -45,15 +71,18 @@ class SearchFragment : Fragment() {
 
         refUsers.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
-                (mUsers as ArrayList<Users>).clear()
-                for (snapshot in p0.children) {
-                    val user: Users? = snapshot.getValue(Users::class.java)
-                    /*ben hariç bütün userları arrayliste ekle*/
-                    if (!(user!!.getUID()).equals(firebaseUserID)) {
-                        (mUsers as ArrayList<Users>).add(user)
+                if(searchEditTxt.toString() == null){
+                    (mUsers as ArrayList<Users>).clear()
+                    for (snapshot in p0.children) {
+                        val user: Users? = snapshot.getValue(Users::class.java)
+                        /*ben hariç bütün userları arrayliste ekle*/
+                        if (!(user!!.getUID()).equals(firebaseUserID)) {
+                            (mUsers as ArrayList<Users>).add(user)
+                        }
                     }
-                }
                     userAdapter = UserAdapter(context!!, mUsers!!, false)
+                    recyclerView!!.adapter = userAdapter
+                }
             }
 
             override fun onCancelled(p0: DatabaseError) {
@@ -82,6 +111,7 @@ class SearchFragment : Fragment() {
                     }
                 }
                 userAdapter = UserAdapter(context!!, mUsers!!, false)
+                recyclerView!!.adapter = userAdapter
 
             }
 
