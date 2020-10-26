@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -65,10 +66,12 @@ class SettingsFragment : Fragment() {
         })
 
         view.profile_image_settings.setOnClickListener {
+            Log.d("upload","profileclick")
             pickImage()
         }
 
         view.cover_image_settings.setOnClickListener {
+            Log.d("upload","coverclick")
             coverChecker = "cover"
             pickImage()
         }
@@ -102,6 +105,7 @@ class SettingsFragment : Fragment() {
         if(imageUri != null){
             val fileRef = storageRef!!.child(System.currentTimeMillis().toString() + ".jpg")
 
+
             var uploadTask: StorageTask<*>
             uploadTask = fileRef.putFile(imageUri!!)
 
@@ -125,7 +129,7 @@ class SettingsFragment : Fragment() {
                         coverChecker=""
                     } else{
                         val mapProfileImg = HashMap<String, Any>()
-                        mapProfileImg["cover"] = url
+                        mapProfileImg["profile"] = url
                         usersReference!!.updateChildren(mapProfileImg)
                         coverChecker=""
                     }
