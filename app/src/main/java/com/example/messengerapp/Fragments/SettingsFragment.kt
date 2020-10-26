@@ -32,6 +32,7 @@ class SettingsFragment : Fragment() {
     private val RequestCode = 438
     private var imageUri: Uri? = null
     private var storageRef: StorageReference? = null
+    private var coverChecker: String? = ""
 
 
     override fun onCreateView(
@@ -68,6 +69,7 @@ class SettingsFragment : Fragment() {
         }
 
         view.cover_image_settings.setOnClickListener {
+            coverChecker = "cover"
             pickImage()
         }
 
@@ -104,7 +106,7 @@ class SettingsFragment : Fragment() {
             uploadTask = fileRef.putFile(imageUri!!)
 
             uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot,
-                    Task<Uri>>{task: Task<UploadTask.TaskSnapshot> ->
+                    Task<Uri>>{task ->
                 if(!task.isSuccessful){
                     task.exception?.let {
                         throw it
@@ -116,7 +118,18 @@ class SettingsFragment : Fragment() {
                     val downloadUrl = task.result
                     val url = downloadUrl.toString()
 
-
+                    if(coverChecker == "cover"){
+                        val mapCoverImg = HashMap<String, Any>()
+                        mapCoverImg["cover"] = url
+                        usersReference!!.updateChildren(mapCoverImg)
+                        coverChecker=""
+                    } else{
+                        val mapProfileImg = HashMap<String, Any>()
+                        mapProfileImg["cover"] = url
+                        usersReference!!.updateChildren(mapProfileImg)
+                        coverChecker=""
+                    }
+                    progressBar.dismiss()
                 }
             }
 
