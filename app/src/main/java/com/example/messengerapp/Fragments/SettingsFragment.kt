@@ -156,7 +156,11 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        usersReference!!.updateChildren(mapSocial)
+        usersReference!!.updateChildren(mapSocial).addOnCompleteListener { task ->
+            if (task.isSuccessful){
+                Toast.makeText(context, "Updated succesfully", Toast.LENGTH_LONG).show()
+            }
+        }
     }
 
     private fun pickImage() {
