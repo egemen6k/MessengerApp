@@ -129,7 +129,7 @@ class SettingsFragment : Fragment() {
             }
         })
 
-        builder.setPositiveButton("Create", DialogInterface.OnClickListener { dialog, which ->
+        builder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialog, which ->
             dialog.cancel()
         })
         builder.show()
