@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_message_chat.*
 
 class MessageChatActivity : AppCompatActivity() {
@@ -31,7 +32,18 @@ class MessageChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun sendMessageToUser(uid: String, userIdVisit: String?, message: String) {
+    private fun sendMessageToUser(senderId: String, receiverId: String?, message: String) {
 
+        val reference = FirebaseDatabase.getInstance().reference
+        val messageKey = reference.push().key
+
+        val messageHashMap = HashMap<String, Any?>()
+        messageHashMap["sender"] = senderId
+        messageHashMap["message"] = message
+        messageHashMap["receiver"] = receiverId
+        messageHashMap["isseen"] = false
+        messageHashMap["url"] = ""
+        messageHashMap["messageId"] = messageKey
+        reference.child("Chats").child(messageKey!!).setValue(messageHashMap)
     }
 }

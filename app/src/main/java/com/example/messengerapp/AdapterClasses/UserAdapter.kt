@@ -44,7 +44,7 @@ class UserAdapter (
                     intent.putExtra("visit_id", user.getUID())
                     mContext.startActivity(intent)
                 }
-                if(position == 0){
+                if(position == 1){
 
             }
             })
