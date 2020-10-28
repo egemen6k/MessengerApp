@@ -44,6 +44,19 @@ class MessageChatActivity : AppCompatActivity() {
         messageHashMap["isseen"] = false
         messageHashMap["url"] = ""
         messageHashMap["messageId"] = messageKey
-        reference.child("Chats").child(messageKey!!).setValue(messageHashMap)
+        reference.child("Chats").child(messageKey!!)
+            .setValue(messageHashMap)
+            .addOnCompleteListener {task->
+                if(task.isSuccessful){
+                    val chatsListReference = FirebaseDatabase.getInstance().reference
+                        .child("ChatList")
+
+                    chatsListReference.child("id").setValue(firebaseUser!!.uid)
+                    val reference = FirebaseDatabase.getInstance().reference
+                        .child("Users").child(firebaseUser!!.uid)
+
+                    //implement the push notifications using fcm
+                }
+            }
     }
 }
