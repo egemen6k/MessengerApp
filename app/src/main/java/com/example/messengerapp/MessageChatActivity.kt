@@ -58,6 +58,7 @@ class MessageChatActivity : AppCompatActivity() {
             }else{
                 sendMessageToUser(firebaseUser!!.uid, userIdVisit, message)
             }
+            text_message.setText("")
         }
 
         attach_image_file_btn.setOnClickListener {
@@ -86,9 +87,31 @@ class MessageChatActivity : AppCompatActivity() {
                 if(task.isSuccessful){
                     val chatsListReference = FirebaseDatabase.getInstance().reference
                         .child("ChatList")
+                        .child(firebaseUser!!.uid)
+                        .child(userIdVisit!!)
+
+                    chatsListReference.addListenerForSingleValueEvent(object : ValueEventListener{
+                        override fun onDataChange(p0: DataSnapshot) {
+                            if(!p0.exists()){
+                                chatsListReference.child("id").setValue(userIdVisit)
+                            }
+                            val chatsListReceiverRef = FirebaseDatabase.getInstance().reference
+                                .child("ChatList")
+                                .child(userIdVisit!!)
+                                .child(firebaseUser!!.uid)
+                                chatsListReceiverRef.child("id").setValue(firebaseUser!!.uid)
+                        }
+
+                        override fun onCancelled(p0: DatabaseError) {
+
+                        }
+                    })
+
+
+
 
                     //implement the push notifications using fcm
-                    chatsListReference.child("id").setValue(firebaseUser!!.uid)
+
                     val reference = FirebaseDatabase.getInstance().reference
                         .child("Users").child(firebaseUser!!.uid)
 
@@ -99,10 +122,10 @@ class MessageChatActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == 438 && resultCode == RESULT_OK && data!!.data!= null){
-            val loadingBar = ProgressDialog(applicationContext)
-            loadingBar.setMessage("Please wait, image is sending")
-            loadingBar.show()
+        if(requestCode == 438 && resultCode == RESULT_OK && data!= null && data!!.data!= null){
+            val progressBar = ProgressDialog(this)
+            progressBar.setMessage("image is uploading, please wait")
+            progressBar.show()
 
             val fileUri = data.data
             val storageReference = FirebaseStorage.getInstance().reference.child("Chat Images")
@@ -135,6 +158,8 @@ class MessageChatActivity : AppCompatActivity() {
                     messageHashMap["messageId"] = messageId
 
                     ref.child("Chats").child(messageId!!).setValue(messageHashMap)
+
+                    progressBar.dismiss()
                 }
             }
         }
