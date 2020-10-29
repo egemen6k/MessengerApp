@@ -48,6 +48,7 @@ class UserAdapter (
 
             }
             })
+            builder.show()
         }
     }
 
