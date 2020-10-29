@@ -31,7 +31,7 @@ class UserAdapter (
         holder.usernameTxt.text = user!!.getUserName()
         Picasso.get().load(user.getProfile()).placeholder(R.drawable.profile).into(holder.profileImageView)
 
-        holder.itemView.setOnClickListener {
+        holder.itemView.setOnLongClickListener {
             val options = arrayOf<CharSequence>(
                 "Send Message",
                 "Visit Profile"
@@ -49,7 +49,15 @@ class UserAdapter (
             }
             })
             builder.show()
+            return@setOnLongClickListener true
         }
+
+        holder.itemView.setOnClickListener {
+                    val intent = Intent(mContext, MessageChatActivity::class.java)
+                    intent.putExtra("visit_id", user.getUID())
+                    mContext.startActivity(intent)
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
