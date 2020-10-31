@@ -11,6 +11,7 @@ import com.example.messengerapp.ModelClasses.Chat
 import com.example.messengerapp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.message_item_left.view.*
 
@@ -25,8 +26,15 @@ class ChatsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chat: Chat = mChatList[position]
 
+        //image message - right side
         if(chat.getSender().equals(firebaseUser!!.uid)){
-            holder.show_text_message.visibility
+            holder.show_text_message!!.visibility = View.GONE
+            holder.right_image_view!!.visibility = View.VISIBLE
+            Picasso.get().load(chat.getUrl()).into(holder.right_image_view)
+        }else if(!chat.getSender().equals(firebaseUser!!.uid)){
+            holder.show_text_message!!.visibility = View.GONE
+            holder.left_image_view!!.visibility = View.VISIBLE
+            Picasso.get().load(chat.getUrl()).into(holder.left_image_view)
         }
     }
 
