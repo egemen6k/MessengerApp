@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.messengerapp.ModelClasses.Chat
@@ -21,10 +22,12 @@ class ChatsAdapter(
     val imageUrl: String
 ): RecyclerView.Adapter<ChatsAdapter.ViewHolder>()
 {
-    var firebaseUser: FirebaseUser? = null
+    var firebaseUser: FirebaseUser? = FirebaseAuth.getInstance().currentUser!!
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chat: Chat = mChatList[position]
+
+        Picasso.get().load(imageUrl).into(holder.profile_image)
 
         //images-messages
         if(chat.getMessage().equals("sent you an image.") && !chat.getUrl().equals("")){
@@ -44,6 +47,32 @@ class ChatsAdapter(
         //text messages
         else{
             holder.show_text_message!!.text = chat.getMessage()
+        }
+
+        //sent and seen message
+
+        if(position == mChatList.size-1){
+
+            if(chat.geIisSeen()){
+                holder.text_seen!!.text = "Seen"
+
+                if(chat.getMessage().equals("sent you an image.") && !chat.getUrl().equals("")){
+                    val lp: RelativeLayout.LayoutParams? = holder.text_seen!!.layoutParams as RelativeLayout.LayoutParams?
+                    lp!!.setMargins(0,245,10,0)
+                    holder.text_seen!!.layoutParams = lp
+                }
+            }else{
+                holder.text_seen!!.text = "Sent"
+
+                if(chat.getMessage().equals("sent you an image.") && !chat.getUrl().equals("")){
+                    val lp: RelativeLayout.LayoutParams? = holder.text_seen!!.layoutParams as RelativeLayout.LayoutParams?
+                    lp!!.setMargins(0,245,10,0)
+                    holder.text_seen!!.layoutParams = lp
+                }
+            }
+
+        }else{
+            holder.text_seen!!.visibility = View.GONE
         }
     }
 
@@ -74,8 +103,6 @@ class ChatsAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return super.getItemViewType(position)
-
-        firebaseUser = FirebaseAuth.getInstance().currentUser
 
         return if (mChatList[position].getSender().equals(firebaseUser!!.uid)){
             1
