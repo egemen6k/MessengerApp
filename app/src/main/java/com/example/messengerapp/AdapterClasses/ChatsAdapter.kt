@@ -26,15 +26,24 @@ class ChatsAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val chat: Chat = mChatList[position]
 
-        //image message - right side
-        if(chat.getSender().equals(firebaseUser!!.uid)){
-            holder.show_text_message!!.visibility = View.GONE
-            holder.right_image_view!!.visibility = View.VISIBLE
-            Picasso.get().load(chat.getUrl()).into(holder.right_image_view)
-        }else if(!chat.getSender().equals(firebaseUser!!.uid)){
-            holder.show_text_message!!.visibility = View.GONE
-            holder.left_image_view!!.visibility = View.VISIBLE
-            Picasso.get().load(chat.getUrl()).into(holder.left_image_view)
+        //images-messages
+        if(chat.getMessage().equals("sent you an image.") && !chat.getUrl().equals("")){
+            //image message - right side
+            if(chat.getSender().equals(firebaseUser!!.uid)){
+                holder.show_text_message!!.visibility = View.GONE
+                holder.right_image_view!!.visibility = View.VISIBLE
+                Picasso.get().load(chat.getUrl()).into(holder.right_image_view)
+
+                //image message- left side
+            }else if(!chat.getSender().equals(firebaseUser!!.uid)){
+                holder.show_text_message!!.visibility = View.GONE
+                holder.left_image_view!!.visibility = View.VISIBLE
+                Picasso.get().load(chat.getUrl()).into(holder.left_image_view)
+            }
+        }
+        //text messages
+        else{
+            holder.show_text_message!!.text = chat.getMessage()
         }
     }
 
