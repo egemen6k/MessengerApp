@@ -232,7 +232,7 @@ class MessageChatActivity : AppCompatActivity() {
                 for(dataSnapshot in p0.children){
                     val chat = dataSnapshot.getValue(Chat::class.java)
 
-                    if(chat!!.getReceiver().equals(firebaseUser!!.uid) && chat.getSender().equals(userId))
+                    if(chat!!.getReceiver().equals(firebaseUser!!.uid) && chat!!.getSender().equals(userId))
                     {
                         val hashMap = HashMap<String,Any>()
                         hashMap["isseen"] = true
