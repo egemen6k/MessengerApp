@@ -3,6 +3,7 @@ package com.example.messengerapp.Fragments
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -68,19 +69,19 @@ class SearchFragment : Fragment() {
         /*tüm userları  aldığımız için child(userid) yi sildik*/
         val refUsers = FirebaseDatabase.getInstance().reference.child("Users")
 
-        refUsers.addValueEventListener(object : ValueEventListener{
+        refUsers.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(p0: DataSnapshot) {
-            if(searchEditTxt!!.text.toString() ==  ""){
-                (mUsers as ArrayList<Users>).clear()
-                for (snapshot in p0.children) {
-                    val user: Users? = snapshot.getValue(Users::class.java)
-                    /*ben hariç bütün userları arrayliste ekle*/
-                    if (!(user!!.getUID()).equals(firebaseUserID)) {
-                        (mUsers as ArrayList<Users>).add(user)
+                if (searchEditTxt!!.text.toString() == "") {
+                    (mUsers as ArrayList<Users>).clear()
+                    for (snapshot in p0.children) {
+                        val user: Users? = snapshot.getValue(Users::class.java)
+                        /*ben hariç bütün userları arrayliste ekle*/
+                        if (!(user!!.getUID()).equals(firebaseUserID)) {
+                            (mUsers as ArrayList<Users>).add(user)
+                        }
                     }
-                }
-                userAdapter = UserAdapter(context!!, mUsers!!, false)
-                recyclerView!!.adapter = userAdapter
+                    userAdapter = UserAdapter(context!!, mUsers!!, false)
+                    recyclerView!!.adapter = userAdapter
                 }
             }
 

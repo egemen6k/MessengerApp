@@ -1,6 +1,7 @@
 package com.example.messengerapp.AdapterClasses
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +51,7 @@ class ChatsAdapter(
         }
 
         //sent and seen message
-
+        //size sayıyı veriyor, position indexi. ondan dolayı -1
         if(position == mChatList.size-1){
 
             if(chat.geIisSeen()){

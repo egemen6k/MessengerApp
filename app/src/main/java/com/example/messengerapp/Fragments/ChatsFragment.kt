@@ -19,4 +19,9 @@ class ChatsFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_chats, container, false)
     }
+
+    private fun retrieveChatLists(){
+
+    }
+
 }
