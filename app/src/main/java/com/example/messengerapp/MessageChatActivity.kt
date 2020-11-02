@@ -17,10 +17,7 @@ import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageTask
@@ -35,6 +32,7 @@ class MessageChatActivity : AppCompatActivity() {
     var chatsAdapter: ChatsAdapter? = null
     var mChatList: List<Chat>? = null
     lateinit var recycler_view_chat: RecyclerView
+    var reference: DatabaseReference? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +61,7 @@ class MessageChatActivity : AppCompatActivity() {
 
         val reference = FirebaseDatabase.getInstance().reference
             .child("Users").child(userIdVisit!!)
-        reference.addValueEventListener(object: ValueEventListener{
+        reference!!.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 val user: Users? = p0.getValue(Users::class.java)
 
@@ -95,6 +93,8 @@ class MessageChatActivity : AppCompatActivity() {
             intent.type = "image/*"
             startActivityForResult(Intent.createChooser(intent,"Pick Image"), 438)
         }
+
+        seenMessage(userIdVisit!!)
     }
 
 
@@ -225,7 +225,7 @@ class MessageChatActivity : AppCompatActivity() {
 
     var seenListener : ValueEventListener? = null
     private fun seenMessage(userId: String){
-        val reference = FirebaseDatabase.getInstance().reference.child("Chats")
+        reference = FirebaseDatabase.getInstance().reference.child("Chats")
 
         seenListener = reference!!.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
@@ -246,6 +246,12 @@ class MessageChatActivity : AppCompatActivity() {
 
             }
         })
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        reference!!.removeEventListener(seenListener!!)
     }
 
 }
