@@ -222,4 +222,30 @@ class MessageChatActivity : AppCompatActivity() {
             }
         })
     }
+
+    var seenListener : ValueEventListener? = null
+    private fun seenMessage(userId: String){
+        val reference = FirebaseDatabase.getInstance().reference.child("Chats")
+
+        seenListener = reference!!.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                for(dataSnapshot in p0.children){
+                    val chat = dataSnapshot.getValue(Chat::class.java)
+
+                    if(chat!!.getReceiver().equals(firebaseUser!!.uid) && chat.getSender().equals(userId))
+                    {
+                        val hashMap = HashMap<String,Any>()
+                        hashMap["isseen"] = true
+                        dataSnapshot.ref.updateChildren(hashMap)
+
+                    }
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        })
+    }
+
 }
