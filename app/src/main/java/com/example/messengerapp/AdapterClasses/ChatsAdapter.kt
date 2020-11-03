@@ -59,7 +59,7 @@ class ChatsAdapter(
         //size sayıyı veriyor, position indexi. ondan dolayı -1
         if(position == mChatList.size-1){
 
-            if(chat.geIisSeen()){
+            if(chat.getisSeen()){
                 holder.text_seen!!.text = "Seen"
 
                 if(chat.getMessage().equals("sent you an image.") && !chat.getUrl().equals("")){

@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
 
                 for(dataSnapshot in p0.children){
                     val chat = dataSnapshot.getValue(Chat::class.java)
-                    if(chat!!.getReceiver().equals(firebaseUser!!.uid) && !chat.geIisSeen()){
+                    if(chat!!.getReceiver().equals(firebaseUser!!.uid) && !chat!!.getisSeen()){
                         countUnreadMessages += 1
                     }
                 }
