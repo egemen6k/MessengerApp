@@ -86,12 +86,13 @@ class ChatsAdapter(
         return mChatList.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder {
-        return if(position == 1){
+    override fun onCreateViewHolder(parent: ViewGroup, position: Int): ViewHolder
+    {
+        return if(position == 1) {
             val view: View = LayoutInflater.from(mContext).inflate(R.layout.message_item_right,parent,false)
             ViewHolder(view)
         }
-        else{
+        else {
             val view: View = LayoutInflater.from(mContext).inflate(R.layout.message_item_left,parent,false)
             ViewHolder(view)
         }

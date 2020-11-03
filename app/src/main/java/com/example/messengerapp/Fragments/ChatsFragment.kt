@@ -68,7 +68,7 @@ class ChatsFragment : Fragment() {
         mUsers = ArrayList()
 
         val ref = FirebaseDatabase.getInstance().reference.child("Users")
-        ref!!.addValueEventListener(object : ValueEventListener{
+        ref.addValueEventListener(object : ValueEventListener{
 
             override fun onDataChange(p0: DataSnapshot) {
                 (mUsers as ArrayList).clear()
