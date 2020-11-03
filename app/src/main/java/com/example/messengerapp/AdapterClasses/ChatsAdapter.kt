@@ -33,7 +33,7 @@ class ChatsAdapter(
         //images-messages
         if(chat.getMessage().equals("sent you an image.") && !chat.getUrl().equals("")){
             //image message - right side
-            if(chat.getSender().equals(firebaseUser!!.uid)){
+/*            if(chat.getSender().equals(firebaseUser!!.uid)){
                 holder.show_text_message!!.visibility = View.GONE
                 holder.right_image_view!!.visibility = View.VISIBLE
                 Picasso.get().load(chat.getUrl()).into(holder.right_image_view)
@@ -43,12 +43,12 @@ class ChatsAdapter(
                 holder.show_text_message!!.visibility = View.GONE
                 holder.left_image_view!!.visibility = View.VISIBLE
                 Picasso.get().load(chat.getUrl()).into(holder.left_image_view)
-            }
+            }*/
 /*          Normal kullanımda zaten viewu biz belirliyoruz. Imageye tek isim verip onu visible yaparsak
-            hangi viewsa ona atayarak düzgün çalışıyor.
+            hangi viewsa ona atayarak düzgün çalışıyor.*/
             holder.show_text_message!!.visibility = View.GONE
             holder.image_view!!.visibility = View.VISIBLE
-            Picasso.get().load(chat.getUrl()).into(holder.image_view)*/
+            Picasso.get().load(chat.getUrl()).into(holder.image_view)
         }
         //text messages
         else{
@@ -101,9 +101,9 @@ class ChatsAdapter(
     {
         var profile_image: CircleImageView? = itemview.findViewById(R.id.profile_image)
         var show_text_message: TextView? = itemview.findViewById(R.id.show_text_message)
-        var left_image_view: ImageView? = itemview.findViewById(R.id.left_image_view)
+        var image_view: ImageView? = itemview.findViewById(R.id.image_view)
         var text_seen: TextView? = itemview.findViewById(R.id.text_seen)
-        var right_image_view: ImageView? = itemview.findViewById(R.id.right_image_view)
+        /*var right_image_view: ImageView? = itemview.findViewById(R.id.right_image_view)*/
 
     }
 

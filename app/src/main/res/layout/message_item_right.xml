@@ -38,7 +38,7 @@
         </TextView>
 
         <ImageView
-            android:id="@+id/right_image_view"
+            android:id="@+id/image_view"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_alignParentEnd="true"
