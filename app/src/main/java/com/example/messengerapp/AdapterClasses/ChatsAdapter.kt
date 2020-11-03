@@ -44,6 +44,11 @@ class ChatsAdapter(
                 holder.left_image_view!!.visibility = View.VISIBLE
                 Picasso.get().load(chat.getUrl()).into(holder.left_image_view)
             }
+/*          Normal kullanımda zaten viewu biz belirliyoruz. Imageye tek isim verip onu visible yaparsak
+            hangi viewsa ona atayarak düzgün çalışıyor.
+            holder.show_text_message!!.visibility = View.GONE
+            holder.image_view!!.visibility = View.VISIBLE
+            Picasso.get().load(chat.getUrl()).into(holder.image_view)*/
         }
         //text messages
         else{
