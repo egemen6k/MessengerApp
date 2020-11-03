@@ -228,6 +228,7 @@ class MessageChatActivity : AppCompatActivity() {
     private fun seenMessage(userId: String){
         reference = FirebaseDatabase.getInstance().reference.child("Chats")
 
+        /*chat'in içerisine girdiysek seen veriyoruz*/
         seenListener = reference!!.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 for(dataSnapshot in p0.children){
