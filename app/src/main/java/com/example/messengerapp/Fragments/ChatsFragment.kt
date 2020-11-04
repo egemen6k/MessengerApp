@@ -87,7 +87,7 @@ class ChatsFragment : Fragment() {
             }
 
             override fun onCancelled(p0: DatabaseError) {
-
+            //VCS-check comment line
             }
         })
     }
