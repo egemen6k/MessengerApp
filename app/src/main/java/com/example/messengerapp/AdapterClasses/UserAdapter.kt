@@ -18,18 +18,18 @@ import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_main.view.*
 
-class UserAdapter (
-    private val mContext : Context,
+class UserAdapter(
+    private val mContext: Context,
     private val mUsers: List<Users>,
     private val isChatChecked: Boolean
-    ) : RecyclerView.Adapter<UserAdapter.ViewHolder?>()
-{
+) : RecyclerView.Adapter<UserAdapter.ViewHolder?>() {
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user: Users = mUsers[position]
         holder.usernameTxt.text = user!!.getUserName()
-        Picasso.get().load(user.getProfile()).placeholder(R.drawable.profile).into(holder.profileImageView)
+        Picasso.get().load(user.getProfile()).placeholder(R.drawable.profile)
+            .into(holder.profileImageView)
 
         holder.itemView.setOnLongClickListener {
             val options = arrayOf<CharSequence>(
@@ -38,30 +38,30 @@ class UserAdapter (
             )
             val builder: AlertDialog.Builder = AlertDialog.Builder(mContext)
             builder.setTitle("What do you want?")
-            builder.setItems(options,DialogInterface.OnClickListener { dialog, position ->
-                if(position == 0){
+            builder.setItems(options, DialogInterface.OnClickListener { dialog, position ->
+                if (position == 0) {
                     val intent = Intent(mContext, MessageChatActivity::class.java)
                     intent.putExtra("visit_id", user.getUID())
                     mContext.startActivity(intent)
-                }
-                if(position == 1){
+                } else if (position == 1) {
 
-            }
+                }
             })
             builder.show()
             return@setOnLongClickListener true
         }
 
         holder.itemView.setOnClickListener {
-                    val intent = Intent(mContext, MessageChatActivity::class.java)
-                    intent.putExtra("visit_id", user.getUID())
-                    mContext.startActivity(intent)
+            val intent = Intent(mContext, MessageChatActivity::class.java)
+            intent.putExtra("visit_id", user.getUID())
+            mContext.startActivity(intent)
         }
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(mContext).inflate(R.layout.user_search_item_layout,parent,false)
+        val view: View =
+            LayoutInflater.from(mContext).inflate(R.layout.user_search_item_layout, parent, false)
         return ViewHolder(view)
     }
 
@@ -69,7 +69,7 @@ class UserAdapter (
         return mUsers.size
     }
 
-    inner class ViewHolder(itemView: View)  : RecyclerView.ViewHolder(itemView){
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var usernameTxt: TextView = itemView.findViewById(R.id.username)
         var profileImageView: CircleImageView = itemView.findViewById(R.id.profile_image)
         var onlineTxt: CircleImageView = itemView.findViewById(R.id.image_online)

@@ -157,7 +157,7 @@ class SettingsFragment : Fragment() {
         }
 
         usersReference!!.updateChildren(mapSocial).addOnCompleteListener { task ->
-            if (task.isSuccessful){
+            if (task.isSuccessful) {
                 Toast.makeText(context, "Updated succesfully", Toast.LENGTH_LONG).show()
             }
         }
