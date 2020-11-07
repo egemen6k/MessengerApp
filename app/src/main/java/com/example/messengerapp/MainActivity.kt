@@ -184,11 +184,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateStatus(status: String){
-        ref = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser!!.uid)
+        val ref = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser!!.uid)
 
         val hashMap = HashMap<String, Any>()
         hashMap["status"] = status
-        ref!!.updateChildren(haspMap)
+        ref!!.updateChildren(hashMap)
     }
 
     override fun onResume() {

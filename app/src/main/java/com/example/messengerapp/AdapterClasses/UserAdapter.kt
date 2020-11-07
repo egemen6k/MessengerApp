@@ -31,6 +31,25 @@ class UserAdapter(
         Picasso.get().load(user.getProfile()).placeholder(R.drawable.profile)
             .into(holder.profileImageView)
 
+        if(isChatChecked){
+            retrieveLastMessage(user.getUID(), holder.lastMessageTxt)
+        }else{
+            holder.lastMessageTxt.visibility = View.GONE
+        }
+
+        if(isChatChecked){
+            if(user.getStatus() == "online"){
+                holder.onlineImageView.visibility = View.VISIBLE
+                holder.offlineImageView.visibility = View.GONE
+            }else{
+                holder.offlineImageView.visibility = View.VISIBLE
+                holder.onlineImageView.visibility = View.GONE
+            }
+        }else{
+            holder.offlineImageView.visibility = View.GONE
+            holder.onlineImageView.visibility = View.GONE
+        }
+
         holder.itemView.setOnLongClickListener {
             val options = arrayOf<CharSequence>(
                 "Send Message",
@@ -59,6 +78,10 @@ class UserAdapter(
 
     }
 
+    private fun retrieveLastMessage(uıd: String?, lastMessageTxt: TextView) {
+
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
             LayoutInflater.from(mContext).inflate(R.layout.user_search_item_layout, parent, false)
@@ -72,8 +95,8 @@ class UserAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var usernameTxt: TextView = itemView.findViewById(R.id.username)
         var profileImageView: CircleImageView = itemView.findViewById(R.id.profile_image)
-        var onlineTxt: CircleImageView = itemView.findViewById(R.id.image_online)
-        var oflineTxt: CircleImageView = itemView.findViewById(R.id.image_offline)
+        var onlineImageView: CircleImageView = itemView.findViewById(R.id.image_online)
+        var offlineImageView: CircleImageView = itemView.findViewById(R.id.image_offline)
         var lastMessageTxt: TextView = itemView.findViewById(R.id.message_last)
     }
 
