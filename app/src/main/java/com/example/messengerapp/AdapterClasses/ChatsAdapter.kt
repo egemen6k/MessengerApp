@@ -65,6 +65,7 @@ class ChatsAdapter(
                             deleteSentMessage(position,holder)
                         }
                     })
+                    builder.show()
                 }
 
                 //image message- left side
@@ -72,16 +73,49 @@ class ChatsAdapter(
                 holder.show_text_message!!.visibility = View.GONE
                 holder.left_image_view!!.visibility = View.VISIBLE
                 Picasso.get().load(chat.getUrl()).into(holder.left_image_view)
+
+                holder.left_image_view!!.setOnClickListener {
+                    val options = arrayOf<CharSequence>(
+                        "View Full Image",
+                        "Cancel"
+                    )
+
+                    var builder: androidx.appcompat.app.AlertDialog.Builder = androidx.appcompat.app.AlertDialog.Builder(holder.itemView.context)
+                    builder.setTitle("What do you want?")
+
+                    builder.setItems(options, DialogInterface.OnClickListener{
+                            dialog, which ->
+                        if(which == 0){
+                            val intent = Intent(mContext,ViewFullImageActivity::class.java)
+                            intent.putExtra("url",chat.getUrl())
+                            mContext.startActivity(intent)
+                        }
+                    })
+                    builder.show()
+                }
             }
-
-
-
-
-
         }
         //text messages
         else{
             holder.show_text_message!!.text = chat.getMessage()
+
+            holder.show_text_message!!.setOnClickListener {
+                val options = arrayOf<CharSequence>(
+                    "Delete Message",
+                    "Cancel"
+                )
+
+                var builder: androidx.appcompat.app.AlertDialog.Builder = androidx.appcompat.app.AlertDialog.Builder(holder.itemView.context)
+                builder.setTitle("What do you want?")
+
+                builder.setItems(options, DialogInterface.OnClickListener{
+                        dialog, which ->
+                        if(which == 0){
+                        deleteSentMessage(position,holder)
+                    }
+                })
+                builder.show()
+            }
         }
 
         //sent and seen message
