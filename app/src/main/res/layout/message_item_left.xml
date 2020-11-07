@@ -27,7 +27,7 @@
     </TextView>
 
     <ImageView
-        android:id="@+id/image_view"
+        android:id="@+id/left_image_view"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_toRightOf="@+id/profile_image"
