@@ -11,8 +11,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.messengerapp.MainActivity
 import com.example.messengerapp.MessageChatActivity
+import com.example.messengerapp.ModelClasses.Chat
 import com.example.messengerapp.ModelClasses.Users
 import com.example.messengerapp.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,6 +29,7 @@ class UserAdapter(
     private val mUsers: List<Users>,
     private val isChatChecked: Boolean
 ) : RecyclerView.Adapter<UserAdapter.ViewHolder?>() {
+    var lastMSG: String? = ""
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -78,10 +85,6 @@ class UserAdapter(
 
     }
 
-    private fun retrieveLastMessage(uıd: String?, lastMessageTxt: TextView) {
-
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
             LayoutInflater.from(mContext).inflate(R.layout.user_search_item_layout, parent, false)
@@ -100,5 +103,36 @@ class UserAdapter(
         var lastMessageTxt: TextView = itemView.findViewById(R.id.message_last)
     }
 
+    private fun retrieveLastMessage(chatUserId: String?, lastMessageTxt: TextView) {
+        lastMSG = "defaultMSG"
 
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        val reference = FirebaseDatabase.getInstance().reference.child("Chats")
+        reference.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                for(dataSnapshot in p0.children){
+                    val chat: Chat? = dataSnapshot.getValue(Chat::class.java)
+
+                    if (firebaseUser != null && chat != null){
+                        if(chat.getReceiver() == firebaseUser!!.uid &&
+                            chat.getSender() == chatUserId ||
+                                chat.getReceiver() == chatUserId &&
+                                chat.getSender() == firebaseUser!!.uid){
+                            lastMSG = chat.getMessage()!!
+                        }
+                    }
+                }
+                when(lastMSG){
+                    "defaultMSG" -> lastMessageTxt.text = "No Message"
+                    "sent you an image." -> lastMessageTxt.text = "image sent."
+                    else -> lastMessageTxt.text = lastMSG
+                }
+                lastMSG = "defaultMSG"
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        })
+    }
 }
