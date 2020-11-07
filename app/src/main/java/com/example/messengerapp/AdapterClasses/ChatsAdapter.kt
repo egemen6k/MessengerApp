@@ -99,22 +99,24 @@ class ChatsAdapter(
         else{
             holder.show_text_message!!.text = chat.getMessage()
 
-            holder.show_text_message!!.setOnClickListener {
-                val options = arrayOf<CharSequence>(
-                    "Delete Message",
-                    "Cancel"
-                )
+            if(firebaseUser!!.uid == chat.getSender()){
+                holder.show_text_message!!.setOnClickListener {
+                    val options = arrayOf<CharSequence>(
+                        "Delete Message",
+                        "Cancel"
+                    )
 
-                var builder: androidx.appcompat.app.AlertDialog.Builder = androidx.appcompat.app.AlertDialog.Builder(holder.itemView.context)
-                builder.setTitle("What do you want?")
+                    var builder: androidx.appcompat.app.AlertDialog.Builder = androidx.appcompat.app.AlertDialog.Builder(holder.itemView.context)
+                    builder.setTitle("What do you want?")
 
-                builder.setItems(options, DialogInterface.OnClickListener{
-                        dialog, which ->
+                    builder.setItems(options, DialogInterface.OnClickListener{
+                            dialog, which ->
                         if(which == 0){
-                        deleteSentMessage(position,holder)
-                    }
-                })
-                builder.show()
+                            deleteSentMessage(position,holder)
+                        }
+                    })
+                    builder.show()
+                }
             }
         }
 
