@@ -182,4 +182,24 @@ class MainActivity : AppCompatActivity() {
             return titles[i]
         }
     }
+
+    private fun updateStatus(status: String){
+        ref = FirebaseDatabase.getInstance().reference.child("Users").child(firebaseUser!!.uid)
+
+        val hashMap = HashMap<String, Any>()
+        hashMap["status"] = status
+        ref!!.updateChildren(haspMap)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        updateStatus("online")
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        updateStatus("offline")
+    }
 }
