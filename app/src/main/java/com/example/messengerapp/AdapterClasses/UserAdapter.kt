@@ -14,6 +14,7 @@ import com.example.messengerapp.MessageChatActivity
 import com.example.messengerapp.ModelClasses.Chat
 import com.example.messengerapp.ModelClasses.Users
 import com.example.messengerapp.R
+import com.example.messengerapp.VisitUserProfileActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -70,7 +71,9 @@ class UserAdapter(
                     intent.putExtra("visit_id", user.getUID())
                     mContext.startActivity(intent)
                 } else if (position == 1) {
-
+                    val intent = Intent(mContext, VisitUserProfileActivity::class.java)
+                    intent.putExtra("visit_id", user.getUID())
+                    mContext.startActivity(intent)
                 }
             })
             builder.show()
