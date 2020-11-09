@@ -90,6 +90,7 @@ class ChatsAdapter(
                             intent.putExtra("url",chat.getUrl())
                             mContext.startActivity(intent)
                         }
+
                     })
                     builder.show()
                 }
