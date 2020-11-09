@@ -47,6 +47,7 @@ class MessageChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_message_chat)
 
+
         val toolbar: androidx.appcompat.widget.Toolbar = findViewById(R.id.toolbar_message_chat)
         setSupportActionBar(toolbar)
         supportActionBar!!.title = ""
